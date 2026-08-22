@@ -1,25 +1,26 @@
-import { aboutPageUrl, categoriesPageUrl, loginPageUrl, postJobPageUrl, registerPageUrl, searchJobsPageUrl } from "../../constant";
+import { pageUrl } from "../../constant";
 
 export const centerMenus = [
-    { label: "Search Jobs", path: searchJobsPageUrl },
-    { label: "Categories", path: categoriesPageUrl },
-    { label: "About", path: aboutPageUrl },
+    { label: "Search Jobs", path: pageUrl.searchJobs },
+    { label: "Categories", path: pageUrl.categories },
+    { label: "About", path: pageUrl.about },
 ];
 
 export const actionButtons = [
     {
         label: "Login",
-        path: loginPageUrl,
+        path: pageUrl.login,
         variant: "outlined",
     },
     {
         label: "Register",
-        path: registerPageUrl,
+        path: pageUrl.login,
+        state: { mode: "register" },
         variant: "outlined",
     },
     {
         label: "Post a Job",
-        path: postJobPageUrl,
+        path: pageUrl.postJob,
         variant: "contained",
     },
 ];

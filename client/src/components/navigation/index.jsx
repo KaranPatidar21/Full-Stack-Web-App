@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   AppBar,
@@ -17,9 +18,32 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import { actionButtons, centerMenus } from "./constant";
 import PtJobButton from "../ui-component/PtJobButton";
+import CommonModal from "../ui-component/CommonModal";
+import { logout } from "../../pages/login/service/authReducer";
 
 function Navigation() {
   const [open, setOpen] = useState(false);
+  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+  const visibleActions = user
+    ? actionButtons.filter((button) => button.label === "Post a Job")
+    : actionButtons;
+
+  function openLogoutDialog() {
+    setLogoutDialogOpen(true);
+  }
+
+  function closeLogoutDialog() {
+    setLogoutDialogOpen(false);
+  }
+
+  function confirmLogout() {
+    dispatch(logout());
+    setLogoutDialogOpen(false);
+    setOpen(false);
+  }
+
   return (
     <>
       <AppBar
@@ -82,13 +106,15 @@ function Navigation() {
               alignItems: "center",
             }}
           >
+            {user && <Typography className="nav-user">Hi, {user.fullName}</Typography>}
             <PtJobButton
-              buttons={actionButtons.map((btn) => ({
+              buttons={visibleActions.map((btn) => ({
                 id: btn.label,
                 actionName: btn.label,
                 variant: btn.variant,
                 component: Link,
                 to: btn.path,
+                state: btn.state,
                 sx:
                   btn.label === "Post a Job"
                     ? {
@@ -106,6 +132,11 @@ function Navigation() {
                       },
               }))}
             />
+            {user && (
+              <Button onClick={openLogoutDialog} className="nav-logout">
+                Log out
+              </Button>
+            )}
           </Box>
 
           {/* Mobile Menu */}
@@ -121,20 +152,40 @@ function Navigation() {
       <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
         <Box sx={{ width: 260 }}>
           <List>
-            {[...centerMenus, ...actionButtons].map((item) => (
+            {[...centerMenus, ...visibleActions].map((item) => (
               <ListItem key={item.label} disablePadding>
                 <ListItemButton
                   component={Link}
                   to={item.path}
+                  state={item.state}
                   onClick={() => setOpen(false)}
                 >
                   <ListItemText primary={item.label} />
                 </ListItemButton>
               </ListItem>
             ))}
+            {user && (
+              <ListItem disablePadding>
+                <ListItemButton onClick={openLogoutDialog}>
+                  <ListItemText primary="Log out" />
+                </ListItemButton>
+              </ListItem>
+            )}
           </List>
         </Box>
       </Drawer>
+
+      <CommonModal
+        open={logoutDialogOpen}
+        onClose={closeLogoutDialog}
+        title="Log out?"
+        description="Are you sure you want to log out of your PTJOB account?"
+        titleId="logout-dialog-title"
+        descriptionId="logout-dialog-description"
+        primaryActionLabel="Log out"
+        onPrimaryAction={confirmLogout}
+        primaryActionClassName="nav-logout-confirm"
+      />
     </>
   );
 }
