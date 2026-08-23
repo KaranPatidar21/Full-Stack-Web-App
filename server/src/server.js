@@ -7,13 +7,32 @@ import authRoutes from "./routes/auth.js";
 
 const app = express();
 const port = Number(process.env.PORT) || 5000;
-const clientOrigin = process.env.CLIENT_ORIGIN || "http://localhost:3000";
+const configuredOrigins = (process.env.CLIENT_ORIGINS || process.env.CLIENT_ORIGIN || "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+const allowedOrigins = new Set([
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "http://127.0.0.1:3000",
+  "http://127.0.0.1:5173",
+  ...configuredOrigins,
+]);
 
 if (!process.env.MONGO_URI || !process.env.JWT_SECRET) {
   throw new Error("MONGO_URI and JWT_SECRET must be configured in server/.env");
 }
 
-app.use(cors({ origin: clientOrigin }));
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.has(origin)) {
+      callback(null, true);
+      return;
+    }
+
+    callback(new Error(`CORS origin not allowed: ${origin}`));
+  },
+}));
 app.use(express.json());
 
 app.get("/api/health", (request, response) => {
