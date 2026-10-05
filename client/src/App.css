@@ -627,3 +627,157 @@
   margin-top: 80px;
   margin-bottom: 80px;
 }
+
+/* Job Categories Section */
+
+.job-category-section {
+  margin-bottom: 90px;
+}
+
+.category-title {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.category-toggle-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+
+.category-toggle-group {
+  padding: 4px;
+  border-radius: 16px !important;
+  border: 1px solid #e3e4eb !important;
+  background: #f1f1f1;
+}
+
+.category-toggle-group .MuiToggleButton-root {
+  min-width: 300px;
+  border: none !important;
+  border-radius: 12px !important;
+  text-transform: none;
+  color: #111827;
+  font-size: 1.08rem;
+  font-weight: 500;
+}
+
+.category-toggle-group .MuiToggleButton-root.Mui-selected {
+  background: #ffffff;
+  color: #111827;
+  box-shadow: 0 1px 3px rgba(17, 24, 39, 0.14);
+}
+
+.job-entry-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.job-entry-card {
+  border-radius: 30px !important;
+  border: 1px solid #e8e8ee;
+  box-shadow: none !important;
+  min-height: 190px;
+}
+
+.job-entry-card.featured {
+  grid-row: span 2;
+  min-height: 396px;
+}
+
+.job-entry-action {
+  height: 100%;
+  padding: 20px;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+}
+
+.job-entry-icon {
+  color: #263d78;
+  font-size: 2rem !important;
+}
+
+.job-entry-label {
+  color: #111827;
+  font-size: 2rem;
+  font-weight: 500 !important;
+  text-align: center;
+}
+
+@media (max-width: 1280px) {
+  .category-toggle-group .MuiToggleButton-root {
+    min-width: 240px;
+  }
+
+  .job-entry-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .job-entry-card.featured {
+    min-height: 190px;
+    grid-row: span 1;
+  }
+}
+
+@media (max-width: 900px) {
+  .category-toggle-group .MuiToggleButton-root {
+    min-width: 190px;
+    font-size: 0.98rem;
+  }
+
+  .job-entry-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .job-entry-card {
+    min-height: 170px;
+    border-radius: 22px !important;
+  }
+
+  .job-entry-label {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .category-title {
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+  }
+
+  .category-toggle-group {
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .category-toggle-group .MuiToggleButton-root {
+    min-width: 0;
+    flex: 1;
+    font-size: 0.92rem;
+  }
+
+  .job-entry-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .job-entry-card,
+  .job-entry-card.featured {
+    min-height: 145px;
+  }
+
+  .job-entry-action {
+    gap: 12px;
+  }
+
+  .job-entry-icon {
+    font-size: 1.75rem !important;
+  }
+
+  .job-entry-label {
+    font-size: 1.25rem;
+  }
+}
