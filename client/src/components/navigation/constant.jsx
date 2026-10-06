@@ -1,11 +1,5 @@
 import { pageUrl } from "../../constant";
 
-export const centerMenus = [
-    { label: "Search Jobs", path: pageUrl.searchJobs },
-    { label: "Categories", path: pageUrl.categories },
-    { label: "About", path: pageUrl.about },
-];
-
 export const actionButtons = [
     {
         label: "Login",
@@ -22,5 +16,12 @@ export const actionButtons = [
         label: "Post a Job",
         path: pageUrl.postJob,
         variant: "contained",
+        employerOnly: true,
+    },
+    {
+        label: "My Posted Jobs",
+        path: pageUrl.myPostedJob,
+        variant: "outlined",
+        employerOnly: true,
     },
 ];

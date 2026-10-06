@@ -5,7 +5,6 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  Button,
   Box,
   IconButton,
   Drawer,
@@ -16,19 +15,21 @@ import {
 } from "@mui/material";
 
 import MenuIcon from "@mui/icons-material/Menu";
-import { actionButtons, centerMenus } from "./constant";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { actionButtons } from "./constant";
 import PtJobButton from "../ui-component/PtJobButton";
 import CommonModal from "../ui-component/CommonModal";
 import { logout } from "../../pages/login/service/authReducer";
+import { isEmployer } from "../../utils/userRole";
 
 function Navigation() {
   const [open, setOpen] = useState(false);
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-  const visibleActions = user
-    ? actionButtons.filter((button) => button.label === "Post a Job")
-    : actionButtons;
+  const visibleActions = !user
+    ? actionButtons.filter((button) => !button.employerOnly)
+    : actionButtons.filter((button) => button.employerOnly && isEmployer(user));
 
   function openLogoutDialog() {
     setLogoutDialogOpen(true);
@@ -73,35 +74,11 @@ function Navigation() {
             PT<span style={{ color: "#ff6236" }}>JOB</span>
           </Typography>
 
-          {/* Center Menus */}
-          <Box
-            sx={{
-              display: { xs: "none", md: "flex" },
-              gap: 4,
-              mx: "auto",
-            }}
-          >
-            {centerMenus.map((menu) => (
-              <Button
-                key={menu.label}
-                component={Link}
-                to={menu.path}
-                sx={{
-                  color: "#5f6273",
-                  fontSize: "1rem",
-                  textTransform: "none",
-                  fontWeight: 500,
-                }}
-              >
-                {menu.label}
-              </Button>
-            ))}
-          </Box>
-
           {/* Right Side */}
           <Box
             sx={{
               display: { xs: "none", md: "flex" },
+              ml: "auto",
               gap: 1.5,
               alignItems: "center",
             }}
@@ -133,9 +110,9 @@ function Navigation() {
               }))}
             />
             {user && (
-              <Button onClick={openLogoutDialog} className="nav-logout">
-                Log out
-              </Button>
+              <IconButton onClick={openLogoutDialog} className="nav-logout" aria-label="Log out" title="Log out">
+                <LogoutIcon />
+              </IconButton>
             )}
           </Box>
 
@@ -152,7 +129,7 @@ function Navigation() {
       <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
         <Box sx={{ width: 260 }}>
           <List>
-            {[...centerMenus, ...visibleActions].map((item) => (
+            {visibleActions.map((item) => (
               <ListItem key={item.label} disablePadding>
                 <ListItemButton
                   component={Link}
@@ -166,9 +143,14 @@ function Navigation() {
             ))}
             {user && (
               <ListItem disablePadding>
-                <ListItemButton onClick={openLogoutDialog}>
-                  <ListItemText primary="Log out" />
-                </ListItemButton>
+                <IconButton
+                  onClick={openLogoutDialog}
+                  aria-label="Log out"
+                  title="Log out"
+                  sx={{ ml: "auto", mr: 1 }}
+                >
+                  <LogoutIcon />
+                </IconButton>
               </ListItem>
             )}
           </List>

@@ -4,6 +4,7 @@ export const pageUrl = {
 	categories: "/categories",
 	about: "/about",
 	postJob: "/post-job",
+	myPostedJob: "/my-posted-job",
 };
 
 export const apiUrl = {
