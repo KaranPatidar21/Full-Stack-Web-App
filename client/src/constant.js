@@ -13,4 +13,8 @@ export const apiUrl = {
 		login: "/auth/login",
 		profile: "/auth/profile",
 	},
+	jobs: {
+		create: "/jobs",
+		myPosted: "/jobs/my-posted",
+	},
 };

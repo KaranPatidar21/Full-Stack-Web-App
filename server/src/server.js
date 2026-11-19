@@ -2,8 +2,8 @@ import "dotenv/config";
 import cors from "cors";
 import express from "express";
 import mongoose from "mongoose";
-import { connectDB } from "./config/db.js";
-import authRoutes from "./routes/auth.js";
+import { startServer } from "./config/database.js";
+import apiRoutes from "./routes/index.js";
 
 const app = express();
 const port = Number(process.env.PORT) || 5000;
@@ -48,18 +48,11 @@ app.get("/api/health", (request, response) => {
   });
 });
 
-app.use("/api/auth", authRoutes);
+app.use("/api", apiRoutes);
 
 app.use((error, request, response, next) => {
   console.error(error);
   response.status(500).json({ message: "Something went wrong on the server." });
 });
 
-connectDB()
-  .then(() => app.listen(port, () => {
-    console.log(`PTJOB API listening on http://localhost:${port}`);
-  }))
-  .catch((error) => {
-    console.error("MongoDB connection failed:", error.message);
-    process.exit(1);
-  });
+startServer(app, port);

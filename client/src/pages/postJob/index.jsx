@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Alert,
   Box,
@@ -12,6 +13,7 @@ import PtJobButton from "../../components/ui-component/PtJobButton";
 import SearchableMultiSelect from "../../components/ui-component/searchableMultiSelect";
 import CustomInputField, { CustomSelectField } from "../../components/ui-component/inputFields";
 import { validateForm as validateFormValues } from "../../utils/formValidation";
+import { createJob } from "../jobs/service/jobAction";
 
 const categories = ["Delivery", "Retail", "Customer support", "Tutoring", "Driving", "Other"];
 const jobTypes = ["Part-time", "Full-time", "Freelance", "Remote", "Walk-in"];
@@ -47,6 +49,8 @@ const requiredFields = {
 };
 
 function PostJob() {
+  const dispatch = useDispatch();
+  const { error: jobError, isLoading } = useSelector((state) => state.jobs);
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
@@ -71,11 +75,12 @@ function PostJob() {
     return Object.keys(nextErrors).length === 0;
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    if (validateForm()) {
-      setSubmitted(true);
-    }
+    if (!validateForm()) return;
+
+    const result = await dispatch(createJob(form));
+    if (createJob.fulfilled.match(result)) setSubmitted(true);
   }
 
   return (
@@ -83,6 +88,7 @@ function PostJob() {
       <Box component="form" className="post-job-card" onSubmit={handleSubmit} noValidate>
         <Typography component="h1" className="post-job-title">Post a job</Typography>
         <Typography className="post-job-subtitle">Find the right person for your opportunity.</Typography>
+        {jobError && <Alert severity="error" className="post-job-feedback">{jobError}</Alert>}
 
         <Box className="post-job-sections-grid">
           <FormSection number="1" title="Role details">
@@ -230,15 +236,15 @@ function PostJob() {
           className="post-job-actions"
           buttons={[{
             label: "Post job",
-            type: "submit",
+            disabled: isLoading,
             className: "post-job-submit",
-            props: { "aria-label": "Post job" },
+            props: { type: "submit", "aria-label": "Post job" },
           }]}
         />
       </Box>
 
       <Snackbar open={submitted} autoHideDuration={3500} onClose={() => setSubmitted(false)}>
-        <Alert severity="success" onClose={() => setSubmitted(false)}>Your job post is ready to publish.</Alert>
+        <Alert severity="success" onClose={() => setSubmitted(false)}>Job posted successfully.</Alert>
       </Snackbar>
     </Box>
   );

@@ -1126,6 +1126,35 @@
   background: #f2552a !important;
 }
 
+.post-job-feedback {
+  margin-bottom: 16px;
+}
+
+.my-posted-job-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.my-posted-job-item {
+  padding: 16px 18px;
+  border: 1px solid #e0e2f0;
+  border-radius: 10px;
+  background: #f7f8fe;
+}
+
+.my-posted-job-item p {
+  color: #69718c;
+  font-size: 0.82rem;
+}
+
+.my-posted-job-item-title {
+  margin-bottom: 4px !important;
+  color: #11152c;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+}
+
 @media (max-width: 600px) {
   .post-job-page {
     padding: 18px 10px 30px;

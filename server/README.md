@@ -21,5 +21,7 @@ The API runs on `http://localhost:5000`.
 - `POST /api/auth/signup` with `fullName`, `email`, `password`, and `role`
 - `POST /api/auth/login` with `email` and `password`
 - `GET /api/auth/profile` with `Authorization: Bearer <token>`
+- `POST /api/jobs` with `Authorization: Bearer <token>` and the job posting form fields. Employer role required.
+- `GET /api/jobs/my-posted` with `Authorization: Bearer <token>` to list the authenticated employer's jobs.
 
 Valid roles are `job_seeker` and `employer`. Signup creates the account and returns the user to the login flow; login returns a JWT that the frontend persists for the session.
