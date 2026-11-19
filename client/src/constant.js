@@ -4,6 +4,7 @@ export const pageUrl = {
 	categories: "/categories",
 	about: "/about",
 	postJob: "/post-job",
+	myPostedJob: "/my-posted-job",
 };
 
 export const apiUrl = {
@@ -11,5 +12,9 @@ export const apiUrl = {
 		signup: "/auth/signup",
 		login: "/auth/login",
 		profile: "/auth/profile",
+	},
+	jobs: {
+		create: "/jobs",
+		myPosted: "/jobs/my-posted",
 	},
 };

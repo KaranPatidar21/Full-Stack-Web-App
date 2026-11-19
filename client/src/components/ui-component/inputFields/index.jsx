@@ -25,7 +25,7 @@ function CustomInputField({
             fontSize: "0.95rem",
           },
           "& .MuiInputLabel-root.Mui-focused": {
-            color: "#ff6236",
+            color: "#555b68",
           },
           "& .MuiInputBase-input": {
             fontSize: "0.95rem",
@@ -39,3 +39,4 @@ function CustomInputField({
 }
 
 export default CustomInputField;
+export { default as CustomSelectField } from "./customSelectField";
